@@ -50,35 +50,52 @@
 
   // imgタグの親となる要素を取得
   const imgdiv = document.getElementById('images');
-  // 画像読み込み(非同期)関数の呼び出し
-  const promise1 = loadImage('img/pic1.png');
+
+  // promsiseの実行(連鎖) → 指定した順に処理を実行できる(1つ目のPromiseが終了しないと次のPromiseは実行されない)
+  // 画像読み込み処理の呼び出し
+  // loadImage('img/pic1.png')
+  //   // promiseの実行
+  //   .then(img => {
+  //     imgdiv.appendChild(img);
+  //     // 画像読み込み処理の呼び出し
+  //     return loadImage('img/pic2.png');
+  //   })
+  //   // promiseの実行
+  //   .then(img => {
+  //     imgdiv.appendChild(img);
+  //     // 画像読み込み処理の呼び出し
+  //     return loadImage('img/pic3.png');
+  //   })
+  //   // promiseの実行
+  //   .then(img => {
+  //     imgdiv.appendChild(img);
+  //     // 画像読み込み処理の実行
+  //     return loadImage('img/pic4.png');
+  //   });
+
+  // 上記の連鎖を短くしたもの
+  // Promise.resolve() → Promiseの結果が格納されている
+  Promise.resolve()
+    // 画像読み込み処理の呼び出し
+    .then(() => loadImage('img/pic1.png'))
+    .then(img => imgdiv.appendChild(img))
+    // 画像読み込み処理の呼び出し
+    .then(() => loadImage('img/pic2.png'))
+    .then(img => imgdiv.appendChild(img))
+    // 画像読み込み処理の呼び出し
+    .then(() => loadImage('img/pic3.png'))
+    .then(img => imgdiv.appendChild(img))
+    // 画像読み込み処理の呼び出し
+    .then(() => loadImage('img/pic4.png'))
+    .then(img => imgdiv.appendChild(img));
   
-  // promiseの実行
-  promise1.then(img => {
-    imgdiv.appendChild(img);
-  });
-
-  // 画像読み込み(非同期)関数の呼び出し
-  const promise2 = loadImage('img/pic2.png');
-
-  // promiseの実行
-  promise2.then(img => {
-    imgdiv.appendChild(img);
-  });
-
-  // 画像読み込み(非同期)関数の呼び出し
-  const promise3 = loadImage('img/pic3.png');
-
-  // promiseの実行
-  promise3.then(img => {
-    imgdiv.appendChild(img);
-  });
-
-  // 画像読み込み(非同期)関数の呼び出し
-  const promise4 = loadImage('img/pic4.png');
-
-  // promiseの実行
-  promise4.then(img => {
-    imgdiv.appendChild(img);
-  });
+  // 上記をループ処理することも可能
+  // ※ 画像読み込みが順不同となるため、上記の連鎖がベターか
+  // let p = Promise.resolve();
+  // for (let i = 1; i <= 4; i ++) {
+  //   p = p.then(() => {
+  //     loadImage(`img/pic${i}.png`)
+  //     .then(img => imgdiv.appendChild(img));
+  //   });
+  // }
 }
