@@ -87,7 +87,9 @@
     .then(img => imgdiv.appendChild(img))
     // 画像読み込み処理の呼び出し
     .then(() => loadImage('img/pic4.png'))
-    .then(img => imgdiv.appendChild(img));
+    .then(img => imgdiv.appendChild(img))
+    // エラーハンドリング
+    .catch(reason => console.log({reason}));
   
   // 上記をループ処理することも可能
   // ※ 画像読み込みが順不同となるため、上記の連鎖がベターか
