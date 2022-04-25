@@ -75,21 +75,21 @@
 
   // 上記の連鎖を短くしたもの
   // Promise.resolve() → Promiseの結果が格納されている
-  Promise.resolve()
-    // 画像読み込み処理の呼び出し
-    .then(() => loadImage('img/pic1.png'))
-    .then(img => imgdiv.appendChild(img))
-    // 画像読み込み処理の呼び出し
-    .then(() => loadImage('img/pic2.png'))
-    .then(img => imgdiv.appendChild(img))
-    // 画像読み込み処理の呼び出し
-    .then(() => loadImage('img/pic3.png'))
-    .then(img => imgdiv.appendChild(img))
-    // 画像読み込み処理の呼び出し
-    .then(() => loadImage('img/pic4.png'))
-    .then(img => imgdiv.appendChild(img))
-    // エラーハンドリング
-    .catch(reason => console.log({reason}));
+  // Promise.resolve()
+  //   // 画像読み込み処理の呼び出し
+  //   .then(() => loadImage('img/pic1.png'))
+  //   .then(img => imgdiv.appendChild(img))
+  //   // 画像読み込み処理の呼び出し
+  //   .then(() => loadImage('img/pic2.png'))
+  //   .then(img => imgdiv.appendChild(img))
+  //   // 画像読み込み処理の呼び出し
+  //   .then(() => loadImage('img/pic3.png'))
+  //   .then(img => imgdiv.appendChild(img))
+  //   // 画像読み込み処理の呼び出し
+  //   .then(() => loadImage('img/pic4.png'))
+  //   .then(img => imgdiv.appendChild(img))
+  //   // エラーハンドリング
+  //   .catch(reason => console.log({reason}));
   
   // 上記をループ処理することも可能
   // ※ 画像読み込みが順不同となるため、上記の連鎖がベターか
@@ -100,4 +100,23 @@
   //     .then(img => imgdiv.appendChild(img));
   //   });
   // }
+
+  // Promise登録用に関数を格納した配列
+  const promises = [
+    loadImage('img/pic1.png'),
+    loadImage('img/pic2.png'),
+    loadImage('img/pic3.png'),
+    loadImage('img/pic4.png'),
+  ];
+
+  // 配列promisesに格納されている要素全てをPromiseで呼び出し
+  Promise.all(promises)
+    // 配列の要素数分処理を繰り返す
+    .then(images => {
+      for (const img of images) {
+        imgdiv.appendChild(img);
+      }
+    })
+    // エラーハンドリング
+    .catch(reason => console.log({reason}));;
 }
